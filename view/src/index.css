@@ -1,0 +1,18 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans JP', 'Times New Roman';
+}
+
+main{
+    min-height: 80vh;
+}
+
+h3{
+    padding: 1rem;
+}
+
+.rating span{
+    margin: 0.1rem;
+}
