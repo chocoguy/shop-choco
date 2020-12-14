@@ -8,15 +8,16 @@ const users = [
         isAdmin: true,
     },
     {
-        name: "Nigga balls",
-        email: "niggaballs@example.com",
-        password: bcrypt.hashSync('niggersnigga7with',10),
+        name: "jose",
+        email: "jose@example.com",
+        password: bcrypt.hashSync('secure1010',10),
     },
     {
-        name: "Nigga balls HD",
-        email: "niggaballshd@example.com",
-        password: bcrypt.hashSync('newsinglewedsayniggaballshd6738',10),
+        name: "baseballbat",
+        email: "yea@example.com",
+        password: bcrypt.hashSync('secureme',10),
     }
 ]
 
 export default users;
+

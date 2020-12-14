@@ -5,7 +5,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './model/db.js';
 import cors from 'cors';
 import productRoutes from './routes/productRoutes.js';
-
+import userRoutes from './routes/userRoutes.js';
 
 
 
@@ -13,6 +13,8 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+app.use(express.json())
 
 //Middleware example
 //app.use((req, res, next) => {
@@ -25,6 +27,7 @@ const app = express();
 app.use(cors())
 
 app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes)
 
 
 
@@ -41,4 +44,3 @@ const PORT = process.env.PORT || 5000
 app.listen(PORT, console.log("Server.js up and running!".blue.bold));
 
 
- //csrftoken=b5SfDDxmVwTAzEg41CkiBRwc4lUwu9XXSM2Vo2wXGEN2EzwG2LPJkS6o1XC8aB9P;sessionid=v1plrs0ghix3h1xa3divo1z4gn5el3o0
