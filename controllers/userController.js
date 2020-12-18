@@ -98,6 +98,49 @@ const getUserProfile = (async (req, res, next) => {
 
 
 
+const updateUserProfile = (async (req, res, next) => {
+    try{
+       
+        let currentUser = await User.findById(req.user._id)
+
+        if(currentUser){
+            currentUser.name = req.body.name || currentUser.name
+            currentUser.email = req.body.email || currentUser.email
+            if(req.body.password) {
+                const salt = await bcrypt.genSalt(10)
+                let saltedPassword = await bcrypt.hash(req.body.password, salt)
+         
+                currentUser.password = saltedPassword
+            }
+
+            const updatedUser = await currentUser.save()
+
+            res.json({
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                isAdmin: updatedUser.isAdmin,
+                token: generateToken(updatedUser._id),
+
+            })
+
+        }else{
+            res.status(400).json({"error" : "User may or may not exist"})
+        }
+
+        //res.send({
+         //   email,
+          //  password
+        //})
+    }catch(error){
+        res.status(400).json({"error" : "stuff occured"})
+        console.log("Error occured at userController.jay" + error); //fix this: Error occured at userController.jsError [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    }
+});
+
+
+
+
 const registerUser = (async (req, res, next) => {
     try{
         const { name, email} = req.body
@@ -137,5 +180,5 @@ const registerUser = (async (req, res, next) => {
 });
 
 
-export {authUser, registerUser, getUserProfile}
+export {authUser, registerUser, getUserProfile, updateUserProfile}
 
