@@ -7,6 +7,7 @@ import rootReducer from './rootReducer.js';
 const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
 const userInfoFromStorage = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
 const shippingAddressFromStorage = localStorage.getItem('shippingAddress') ? JSON.parse(localStorage.getItem('shippingAddress')) : {}
+//TODO add payment method to localstorage
 
 const initialState = {
     cart: {cartItems: cartItemsFromStorage, shippingAddress: shippingAddressFromStorage},
