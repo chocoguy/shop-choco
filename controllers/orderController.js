@@ -38,4 +38,37 @@ const getOrderById = (async (req, res, next) => {
     }
 });
 
-export { addOrderItems, getOrderById }
+// api/orders/:id/pay
+const updateOrderToPaid = (async (req, res, next) => {
+    try{
+        const order = await Order.findById(req.params.id)
+
+        if(order){
+            order.isPaid = true
+            order.paidAt = Date.now()
+            order.paymentResult = {
+                id: req.body.id,
+                status: req.body.status,
+                update_time: req.body.update_time,
+                email_address: req.body.payer.email_address
+            } //comes from paypal
+
+
+        const updatedOrder = await order.save();
+
+        res.json(updatedOrder);
+
+        }else{
+            res.status(404).json({"error" : "order not found"})
+            return
+        }
+         
+    }catch(error){
+        console.log("Error occured at productRoutes.js" + error);
+        res.status(500).json({"error" : "try again LATER"})
+    }
+});
+
+
+
+export { addOrderItems, getOrderById, updateOrderToPaid }
