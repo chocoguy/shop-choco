@@ -70,5 +70,19 @@ const updateOrderToPaid = (async (req, res, next) => {
 });
 
 
+// api/orders/myorders
+const getMyOrders = (async (req, res, next) => {
+    try{
+        const orders = await Order.find({user: req.user._id});
+        res.json(orders);
 
-export { addOrderItems, getOrderById, updateOrderToPaid }
+    }catch(error){
+        console.log("Error occured at ordercontroller.js" + error);
+        res.status(500).json({"error" : "try again LATER"})
+    }
+});
+
+
+
+
+export { addOrderItems, getOrderById, updateOrderToPaid, getMyOrders }
