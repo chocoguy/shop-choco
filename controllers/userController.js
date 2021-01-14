@@ -74,6 +74,8 @@ const getUserProfile = (async (req, res, next) => {
        
         let currentUser = await User.findById(req.user._id)
 
+ 
+
         if(currentUser){
             res.json({
                 _id : currentUser._id,
@@ -179,6 +181,19 @@ const registerUser = (async (req, res, next) => {
     }
 });
 
+//http://localhost:5000/api/users
+const getUsers = (async (req, res, next) => {
+    try{
+        const users = await User.find({})
+        res.json(users);
+       
+        
+    }catch(error){
+        res.status(400).json({"error" : "stuff occured"})
+        console.log("Error occured at userController.admin" + error); //fix this: Error occured at userController.jsError [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    }
+});
 
-export {authUser, registerUser, getUserProfile, updateUserProfile}
+
+export {authUser, registerUser, getUserProfile, updateUserProfile, getUsers}
 

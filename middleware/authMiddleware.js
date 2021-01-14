@@ -13,6 +13,8 @@ const protect = async (req, res, next) => {
 
             req.user = await User.findById(decoded.id).select('-password')
 
+
+
             //console.log(decoded)
 
             next()
@@ -28,4 +30,27 @@ const protect = async (req, res, next) => {
     }
 } 
 
-export { protect }
+
+const isAdmin = async (req, res, next) => {
+    try{
+ 
+        console.log(req.user.isAdmin)
+        let adminstuff = req.user.isAdmin.toString();
+        console.log(`assmin? ${adminstuff}`)
+        if(req.user && adminstuff == "true"){
+            console.log("Admin")
+            next()
+        }
+        else{
+            console.log("Not admin")
+            throw "not an admin"
+        }
+
+    }catch(error){
+        res.status(401).json({"Error" : "user is not admin this incident will be reported"})
+        console.log(error)
+        return
+    }
+}
+
+export { protect, isAdmin }
