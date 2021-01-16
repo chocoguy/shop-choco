@@ -195,5 +195,38 @@ const getUsers = (async (req, res, next) => {
 });
 
 
-export {authUser, registerUser, getUserProfile, updateUserProfile, getUsers}
+//http://localhost:5000/api/users
+const deleteUser = (async (req, res, next) => {
+    try{
+        const user = await User.findById(req.params.id)
+        if(user){
+            await user.remove()
+            res.json({ "message" : "user removed!" })
+        }else{
+            return res.status(404).json({"error" : "user not found"})
+        }
+       
+        
+    }catch(error){
+        res.status(400).json({"error" : "stuff occured"})
+        console.log("Error occured at userController.admin" + error); //fix this: Error occured at userController.jsError [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    }
+});
+
+
+//http://localhost:5000/api/users
+const getUserById = (async (req, res, next) => {
+    try{
+        const user = await User.findById(req.params.id).select('-password')
+        res.json(user);
+       
+        
+    }catch(error){
+        res.status(400).json({"error" : "stuff occured"})
+        console.log("Error occured at userController.admin" + error); //fix this: Error occured at userController.jsError [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    }
+});
+
+
+export {authUser, registerUser, getUserProfile, updateUserProfile, getUsers, deleteUser}
 

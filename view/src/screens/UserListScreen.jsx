@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Tab } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { listUsers } from '../redux/user/userAction';
+import { listUsers, deleteUser } from '../redux/user/userAction';
 
 const UserListScreen = ({ history }) => {
     const dispatch = useDispatch()
@@ -14,16 +14,23 @@ const UserListScreen = ({ history }) => {
     const { userInfo } = userLogin
 
 
+    const userDelete = useSelector(state => state.userDelete)
+    const { success:successDelete } = userDelete
+
+
     useEffect(() => {
         if(userInfo && userInfo.isAdmin){
             dispatch(listUsers())
         }else{
             history.push('/login')
         }
-    }, [dispatch, history])
+    }, [dispatch, history, successDelete])
 
     const deleteHandler = (id) => {
-        console.log("Delete")
+        if(window.confirm('yes?'))
+        {
+            dispatch(deleteUser(id))
+        }
     }
 
 
