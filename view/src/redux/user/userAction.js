@@ -189,7 +189,7 @@ export const deleteUser = (id) => async (dispatch, getState) => { //can get curr
             }
         }
 
-        const { data } = await axios.delete(`http://localhost:5000/api/users/${id}`, config)
+        await axios.delete(`http://localhost:5000/api/users/${id}`, config)
 
         dispatch({
             type: USER_DELETE_SUCCESS,

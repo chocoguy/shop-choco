@@ -218,7 +218,10 @@ const deleteUser = (async (req, res, next) => {
 const getUserById = (async (req, res, next) => {
     try{
         const user = await User.findById(req.params.id).select('-password')
-        res.json(user);
+
+        if(user){
+            res.json(user);   
+        }
        
         
     }catch(error){
@@ -228,5 +231,43 @@ const getUserById = (async (req, res, next) => {
 });
 
 
-export {authUser, registerUser, getUserProfile, updateUserProfile, getUsers, deleteUser}
+
+
+const updateUser = (async (req, res, next) => {
+    try{
+       
+        let currentUser = await User.findById(req.params.id)
+
+        if(currentUser){
+            currentUser.name = req.body.name || currentUser.name
+            currentUser.email = req.body.email || currentUser.email
+            currentUser.isAdmin = req.body.isAdmin
+
+            const updatedUser = await currentUser.save()
+
+            res.json({
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                isAdmin: updatedUser.isAdmin,
+
+            })
+
+        }else{
+            res.status(400).json({"error" : "User may or may not exist"})
+        }
+
+        //res.send({
+         //   email,
+          //  password
+        //})
+    }catch(error){
+        res.status(400).json({"error" : "stuff occured"})
+        console.log("Error occured at userController.jay" + error); //fix this: Error occured at userController.jsError [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    }
+});
+
+
+
+export {authUser, registerUser, getUserProfile, updateUserProfile, getUsers, deleteUser, getUserById, updateUser}
 
