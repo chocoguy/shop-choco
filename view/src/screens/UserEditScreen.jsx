@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserDetails } from '../redux/user/userAction.js'
+import { getUserDetails, updateUser } from '../redux/user/userAction.js'
 import FormContainer from '../components/FormContainer.jsx';
+import { USER_UPDATE_RESET } from '../redux/constants.js';
 import Message from '../components/Message.jsx';
 
 const UserEditScreen = ({ match, history }) => {
@@ -20,22 +21,32 @@ const UserEditScreen = ({ match, history }) => {
     const userDetails = useSelector(state => state.userDetails)
     const { loading, error, user } = userDetails
 
+    const userUpdate = useSelector(state => state.userDetails)
+    const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = userUpdate
+
 
 
     useEffect(() => {
-        if(!user.name || user._id !== userId){
-            dispatch(getUserDetails(userId))
-        }else{
+        if(successUpdate){
+            dispatch({ type: USER_UPDATE_RESET })
+            history.push('/admin/userlist')
+        }
+        else{
+            if(!user.name || user._id !== userId){
+                dispatch(getUserDetails(userId))
+            }else{
             setName(user.name)
             setEmail(user.email)
             setIsAdmin(user.isAdmin)
+            }
         }
-    }, [dispatch, userId, user]) //pass in user so it can actually workk
+    }, [dispatch, history, userId, user, successUpdate]) //pass in user so it can actually workk
 
 
 
     const submitHandler = (e) => {
         e.preventDefault();
+        dispatch(updateUser({_id: userId, name, email, isAdmin}))
     }
 
     return (
@@ -45,6 +56,8 @@ const UserEditScreen = ({ match, history }) => {
 
             <FormContainer>
                 <h1>Edit user</h1>
+                {loadingUpdate && <h1>Loading</h1>}
+                {errorUpdate && <h1>Error update</h1>}
                 {loading ? <h1>Loading</h1> : error ? <h1>{error}</h1> : (
 
                     <Form onSubmit={submitHandler}>
@@ -64,7 +77,7 @@ const UserEditScreen = ({ match, history }) => {
                         </Form.Group>
 
                         <Form.Group controlId='isadmin'>
-                            <Form.Check type='checkbox' placeholder='Is admin?' value={isAdmin} onChange={(e) => setIsAdmin(e.target.cheked)}>
+                            <Form.Check type='checkbox' placeholder='Is admin?' value={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)}>
                             </Form.Check>
 
                         </Form.Group>
