@@ -62,6 +62,8 @@ const ProductListScreen = ({ history, match }) => {
     }
 
 
+    //TODO Create product is cucked.. fix it
+
     return (
         <div>
             <Row className='align-items-center'>

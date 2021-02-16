@@ -44,19 +44,23 @@ const deleteProduct = (async (req, res) => {
 });
 
 
+
+//TODO Create product is cucked.. fix it
 const createProduct = (async (req, res) => {
     try {
 
+        const { name, price, user, image, brand, category, countInStock, description } = req.body;
+
         const product = new Product({
-            name: 'sample text',
-            price: 0,
-            user: req.user._id,
-            image: '/path/img',
-            brand: 'sampletext',
-            category: 'sample text',
-            countInStock: 0,
+            name: name,
+            price: price,
+            user: user,
+            image: image,
+            brand: brand,
+            category: category,
+            countInStock: countInStock,
             numReviews: 0,
-            description: 'sample text'
+            description: description
         })
 
 
